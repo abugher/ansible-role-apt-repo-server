@@ -1,0 +1,15 @@
+server {
+  listen                        443 ssl;
+  ssl_certificate               /etc/ssl/certs/chain.pem;
+  ssl_certificate_key           /etc/ssl/private/{{ inventory_hostname }}.pem;
+  server_name                   apt apt.{{ domain }};
+
+  access_log                    /var/log/nginx/apt.access.log;
+  error_log                     /var/log/nginx/apt.error.log;
+
+  root                          /home/apt-repo-server/repositories/public;
+  autoindex                     on;
+
+  auth_basic                    'authentication required';
+  auth_basic_user_file          /home/apt-repo-server/htpasswd.users;
+}

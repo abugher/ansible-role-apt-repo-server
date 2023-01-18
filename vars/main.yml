@@ -3,23 +3,56 @@ dependencies:
   - 'nginx'
 install_packages:
   - 'aptly'
+  - 'gnupg'
 system_groups:
   - 'apt-repo-server'
 system_users:
   - 'apt-repo-server'
+sync_dirs:
+  # gpg --quick-gen-key --batch --passphrase '' apt-repo-server@apt.neuronpointer.net
+  - src:                '../../sensitive_ansible/roles/apt-repo-server/files/gnupg/'
+    dest:               '/home/apt-repo-server/.gnupg/'
+    delete:             True
+    rsync_opts:         '--chown apt-repo-server:apt-repo-server'
 install_files:
   - owner:              'root'
     group:              'root'
     mode:               '0644'
     src:                'files/conf/aptly.conf'
     dest:               '/home/apt-repo-server/.aptly.conf'
-sync_dirs:
-  # gpg --quick-gen-key --batch --passphrase '' apt-repo-server@apt.neuronpointer.net
-  - src:                '../../sensitive_ansible/roles/apt-repo-server/files/gnupg/'
-    dest:               '/home/apt-repo-server/.gnupg/'
-    delete:             True
-commands:
+  - owner:              'root'
+    group:              'www-data'
+    mode:               '0640'
+    src:                '../../sensitive_ansible/roles/apt-repo-server/files/htpasswd.users'
+    dest:               '/home/apt-repo-server/htpasswd.users'
+template_files:
+  - owner:              'root'
+    group:              'root'
+    mode:               '0644'
+    src:                'templates/conf/sites-available/apt.j2'
+    dest:               '/etc/nginx/sites-available/apt'
+  - owner:              'root'
+    group:              'root'
+    mode:               '0644'
+    src:                'templates/conf/sites-available/apt.ssl.j2'
+    dest:               '/etc/nginx/sites-available/apt.ssl'
+symlinks:
+  - owner:              'root'
+    group:              'root'
+    src:                '/etc/nginx/sites-available/apt'
+    dest:               '/etc/nginx/sites-enabled/apt'
+  - owner:              'root'
+    group:              'root'
+    src:                '/etc/nginx/sites-available/apt.ssl'
+    dest:               '/etc/nginx/sites-enabled/apt.ssl'
+shell_commands:
   - command:            'aptly repo create -distribution debian -component main -architectures amd64 general'
+    user:               'apt-repo-server'
+    chdir:              '/home/apt-repo-server'
     creates:            '/home/apt-repo-server/repositories' 
   - command:            'aptly snapshot create general-0 from repo general && aptly publish -architectures amd64 snapshot general-0'
+    user:               'apt-repo-server'
+    chdir:              '/home/apt-repo-server'
     creates:            '/home/apt-repo-server/repositories/public'
+restart_services:
+  - 'nginx'

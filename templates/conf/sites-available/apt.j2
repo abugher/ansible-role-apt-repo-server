@@ -1,0 +1,5 @@
+server {
+  server_name           apt apt.{{ domain }};
+  return 301            https://apt.{{ domain }}$request_uri;
+}
+

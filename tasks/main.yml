@@ -5,3 +5,9 @@
 - include:              '../tasks/system_users.yml'
 - include:              '../tasks/sync_dirs.yml'
 - include:              '../tasks/install_files.yml'
+- include:              '../tasks/template_files.yml'
+- include:              '../tasks/symlinks.yml'
+- include:              '../tasks/shell_commands.yml'
+- include:              '../tasks/restart_services.yml'
+  when:                 template_files_result.changed
+                        or symlinks_result.changed
