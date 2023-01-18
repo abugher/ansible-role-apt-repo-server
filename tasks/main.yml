@@ -1,2 +1,7 @@
 ---
 - include:              '../tasks/dependencies.yml'
+- include:              '../tasks/install_packages.yml'
+- include:              '../tasks/system_groups.yml'
+- include:              '../tasks/system_users.yml'
+- include:              '../tasks/sync_dirs.yml'
+- include:              '../tasks/install_files.yml'
