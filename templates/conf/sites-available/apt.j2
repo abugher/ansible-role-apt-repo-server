@@ -1,5 +1,13 @@
 server {
-  server_name           apt apt.{{ domain }};
-  return 301            https://apt.{{ domain }}$request_uri;
+  server_name                   apt apt.{{ domain }};
+
+  access_log                    /var/log/nginx/apt.access.log;
+  error_log                     /var/log/nginx/apt.error.log;
+
+  root                          /home/apt-repo-server/repositories/public;
+  autoindex                     on;
+
+  auth_basic                    'authentication required';
+  auth_basic_user_file          /home/apt-repo-server/htpasswd.users;
 }
 

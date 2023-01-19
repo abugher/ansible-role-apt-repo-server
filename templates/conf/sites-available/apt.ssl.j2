@@ -4,8 +4,8 @@ server {
   ssl_certificate_key           /etc/ssl/private/{{ inventory_hostname }}.pem;
   server_name                   apt apt.{{ domain }};
 
-  access_log                    /var/log/nginx/apt.access.log;
-  error_log                     /var/log/nginx/apt.error.log;
+  access_log                    /var/log/nginx/apt.access.ssl.log;
+  error_log                     /var/log/nginx/apt.error.ssl.log;
 
   root                          /home/apt-repo-server/repositories/public;
   autoindex                     on;
