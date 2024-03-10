@@ -1,6 +1,4 @@
 ---
-dependencies:
-  - 'nginx'
 install_packages:
   - 'aptly'
   - 'gnupg'
