@@ -7,7 +7,7 @@ system_groups:
 system_users:
   - 'apt-repo-server'
 sync_dirs:
-  # gpg --quick-gen-key --batch --passphrase '' apt-repo-server@apt.neuronpointer.net
+  # gpg --homedir gnupg/ --quick-gen-key --batch --passphrase '' apt-repo-server@apt.neuronpointer.net default default never
   - src:                '../../sensitive-ansible/roles/apt-repo-server/files/gnupg/'
     dest:               '/home/apt-repo-server/.gnupg/'
     delete:             True

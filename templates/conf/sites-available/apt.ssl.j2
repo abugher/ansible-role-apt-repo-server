@@ -2,7 +2,7 @@ server {
   listen                        443 ssl;
   ssl_certificate               /etc/ssl/certs/chain.pem;
   ssl_certificate_key           /etc/ssl/private/{{ inventory_hostname }}.pem;
-  server_name                   apt apt.{{ domain }};
+  server_name                   apt apt.{{ domain }}{% for domain_alias in domain_aliases %} apt.{{ domain_alias }}{% endfor %};
 
   access_log                    /var/log/nginx/apt.access.ssl.log;
   error_log                     /var/log/nginx/apt.error.ssl.log;

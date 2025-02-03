@@ -1,5 +1,5 @@
 server {
-  server_name                   apt apt.{{ domain }};
+  server_name                   apt apt.{{ domain }}{% for domain_alias in domain_aliases %} apt.{{ domain_alias }}{% endfor %};
 
   access_log                    /var/log/nginx/apt.access.log;
   error_log                     /var/log/nginx/apt.error.log;
