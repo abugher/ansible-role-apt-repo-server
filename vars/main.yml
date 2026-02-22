@@ -8,7 +8,7 @@ system_users:
   - 'apt-repo-server'
 sync_dirs:
   # gpg --homedir gnupg/ --quick-gen-key --batch --passphrase '' apt-repo-server@apt.neuronpointer.net default default never
-  - src:                '../../sensitive-ansible/roles/apt-repo-server/files/gnupg/'
+  - src:                'sensitive/files/gnupg/'
     dest:               '/home/apt-repo-server/.gnupg/'
     delete:             True
     rsync_opts:         '--chown apt-repo-server:apt-repo-server'
@@ -21,7 +21,7 @@ install_files:
   - owner:              'root'
     group:              'www-data'
     mode:               '0640'
-    src:                '../../sensitive-ansible/roles/apt-repo-server/files/htpasswd.users'
+    src:                'sensitive/files/htpasswd.users'
     dest:               '/home/apt-repo-server/htpasswd.users'
 template_files:
   - owner:              'root'
